@@ -56,7 +56,11 @@
 }
 
 .btn-primary {
-    background: linear-gradient(135deg, var(--accent) 0%, #8f1d27 100%);
+    /* Starts a shade deeper than --accent: white on #E63946 measured 4.17:1,
+       just under AA. #d8323f clears it at 4.72:1 and is indistinguishable
+       at a glance. The accent token itself is untouched -- it passes
+       everywhere else it is used. */
+    background: linear-gradient(135deg, #d8323f 0%, #8f1d27 100%);
     color: #fff;
     border: 1px solid rgba(230, 57, 70, 0.35);
 }
