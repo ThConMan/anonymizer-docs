@@ -160,3 +160,13 @@ body {
     50% { opacity: 0.85; }
     72% { opacity: 0.4; }
 }
+
+/* Real Minecraft item art for the feature cards. */
+.mc-paper         { background-image: url("../icons/paper.svg"); }
+.mc-writable_book { background-image: url("../icons/writable_book.svg"); }
+.mc-bone          { background-image: url("../icons/bone.svg"); }
+.mc-book          { background-image: url("../icons/book.svg"); }
+.mc-armor_stand   { background-image: url("../icons/armor_stand.svg"); }
+.mc-tripwire_hook { background-image: url("../icons/tripwire_hook.svg"); }
+.mc-observer      { background-image: url("../icons/observer.svg"); }
+.mc-spyglass      { background-image: url("../icons/spyglass.svg"); }
