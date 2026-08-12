@@ -55,7 +55,7 @@
     <h2 class="section-title">The idea</h2>
     <p class="section-subtitle">On competitive servers, going invisible still shouts your name the moment you strike.</p>
     <p style="max-width:680px;margin:0 auto 2.5rem;text-align:center;color:var(--text-muted);line-height:1.8;">
-        Drink an invisibility potion and you <em>look</em> hidden — but the moment you land a kill, your name is plastered across chat, the death message, the tab list, and the floating nametag above your head. Everyone instantly knows exactly who's stalking them. Anonymizer fixes that: while a player is fully invisible, their name is replaced with a flickering <span class="redacted">REDACTED</span> block — so a stealth kill stays anonymous.
+        Drink an invisibility potion and you <em>look</em> hidden — but the moment you land a kill, your name is plastered across chat, the death message, the tab list, and the floating nametag above your head. Everyone instantly knows exactly who's stalking them. Anonymizer closes all of it at once: in chat and death messages the name scrambles into <span class="redacted">##########</span> — Minecraft's own <span class="mono">&amp;k</span> obfuscation, never holding still — the floating nametag is gone entirely, the tab entry drops both the name and the skin on their head, and the rank prefix goes with it. Nothing is left to identify.
     </p>
 </section>
 
@@ -104,6 +104,16 @@
             <h3>Live preview &amp; status</h3>
             <p>Run <span class="mono">/anonymizer preview</span> to see exactly what your redacted name looks like, and <span class="mono">/anonymizer status</span> to check whether a player is currently being anonymized and why.</p>
         </div>
+        <div class="feature-card">
+            <div class="feature-icon-wrap"><i class="mc mc-lever" aria-hidden="true"></i></div>
+            <h3>Staff menu</h3>
+            <p>Every setting, edited in game. <span class="mono">/anonymizer</span> opens a menu where each click writes straight to <span class="mono">config.yml</span> and applies at once — no reload, no restart, no YAML. Includes a staff-only roster of who's hidden right now, by real name.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon-wrap"><i class="mc mc-name_tag" aria-hidden="true"></i></div>
+            <h3>Master switch</h3>
+            <p>One toggle turns anonymization off server-wide and restores everyone currently hidden instantly — then puts them back just as fast. Persisted across restarts, for events where staff need names visible.</p>
+        </div>
     </div>
 </section>
 
@@ -120,7 +130,7 @@
         <div class="step-card">
             <div class="step-number">2</div>
             <h3>Go dark</h3>
-            <p>Their name is redacted everywhere it would otherwise appear — chat, death messages, tab, and the floating nametag.</p>
+            <p>Chat and death messages scramble their name, the floating nametag disappears, the tab entry loses their name and their skin, and the rank prefix drops off with it.</p>
         </div>
         <div class="step-card">
             <div class="step-number">3</div>

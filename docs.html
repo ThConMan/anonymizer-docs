@@ -34,6 +34,7 @@
             <a href="#install">Install</a>
             <a href="#trigger">The trigger</a>
             <a href="#redacted">What gets redacted</a>
+            <a href="#gui">Staff menu</a>
             <a href="#commands">Commands</a>
             <a href="#permissions">Permissions</a>
             <a href="#config">Config</a>
@@ -48,7 +49,7 @@
 
         <section class="docs-section" id="overview">
             <h2>Overview</h2>
-            <p>Anonymizer makes invisibility actually mean invisibility. On competitive servers, an invisibility potion hides your body but not your <em>name</em> — kill someone and chat, the death message, the tab list, and your floating nametag all announce exactly who you are. Anonymizer replaces a hidden player's name with a flickering redacted block everywhere it would otherwise show, so a stealth kill stays anonymous.</p>
+            <p>Anonymizer makes invisibility actually mean invisibility. On competitive servers, an invisibility potion hides your body but not your <em>name</em> — kill someone and chat, the death message, the tab list, and your floating nametag all announce exactly who you are. Anonymizer closes all of it: the name scrambles to a flickering <span class="mono">&amp;k</span> run wherever it would be printed, the floating nametag is hidden outright, the tab entry loses the name <em>and</em> the skin on the head, and the rank prefix goes with it — so a stealth kill leaves nothing to identify.</p>
             <div class="docs-callout">Anonymizer never reveals more than it has to. The default tab mode keeps players listed but strips their skin to a generic head — the real skin is never sent to other clients while a player is hidden.</div>
         </section>
 
@@ -79,7 +80,27 @@
                 <div class="docs-grid-item"><h4>Tab list</h4><p><span class="mono">tab-mode: hide-skin</span> (default) keeps the player listed but strips their skin so the head shows a generic default. Other modes: <span class="mono">name-only</span> (redact the name only), <span class="mono">remove</span> (drop them from the list entirely), and <span class="mono">off</span>.</p></div>
                 <div class="docs-grid-item"><h4>Nametag</h4><p>The floating in-world username is hidden through a scoreboard team, so a hidden player's name can't be read through walls or across distance.</p></div>
                 <div class="docs-grid-item"><h4>Plugin name sources</h4><p>Nicknames from EssentialsX, CMI, and VentureChat are redacted too — see <a href="#hooks">Plugin hooks</a>.</p></div>
+                <div class="docs-grid-item"><h4>Rank prefix</h4><p>A rank bracket outs a player as surely as a name does. The LuckPerms prefix is blanked while hidden, and CMI's chat module — which bakes the bracket in as literal text — is handled by the <span class="mono">cmi-chat-group</span> switch.</p></div>
             </div>
+        </section>
+
+        <section class="docs-section" id="gui">
+            <h2>Staff menu</h2>
+            <p>Run <span class="mono">/anonymizer</span> in game to open the settings menu. Every option in <span class="mono">config.yml</span> is in it, and each click writes straight back to the file and takes effect immediately — no reload, no restart, no editing YAML.</p>
+            <div class="docs-table-wrap">
+                <table class="docs-table">
+                    <thead><tr><th>Control</th><th>How it works</th></tr></thead>
+                    <tbody>
+                        <tr><td>Toggles</td><td>Click to flip. The item name and its lore both show the current state.</td></tr>
+                        <tr><td>Numbers</td><td>Left-click <span class="mono">+1</span>, right-click <span class="mono">-1</span>. Hold shift for bigger steps. Values are clamped to a sane range.</td></tr>
+                        <tr><td>Modes</td><td>Left-click for the next value, right-click for the previous. All choices are listed in the lore with the active one marked.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p>Three of the items are live panels rather than settings: a <strong>preview</strong> of the hidden name exactly as the server renders it, <strong>Detected hooks</strong> listing the name systems Anonymizer actually found on this server, and <strong>Hidden right now</strong> — the staff-only roster of who is anonymized, by real name.</p>
+            <h3 style="margin-top:2rem;">The master switch</h3>
+            <p>The top item in the menu (also <span class="mono">/anonymizer toggle</span>, and <span class="mono">enabled</span> in the config) turns anonymization off for the entire server. Everyone currently hidden is restored the instant it flips, and turning it back on re-hides them just as fast — nothing is lost either way. It's saved to the config, so it survives a restart.</p>
+            <div class="docs-callout">Useful for events where staff want names visible, or to rule Anonymizer out in one click while debugging another plugin.</div>
         </section>
 
         <section class="docs-section" id="commands">
@@ -89,9 +110,12 @@
                 <table class="docs-table">
                     <thead><tr><th>Command</th><th>What it does</th></tr></thead>
                     <tbody>
-                        <tr><td><span class="mono">/anonymizer reload</span></td><td>Reload the config. <span class="docs-tag docs-tag-op">admin</span></td></tr>
+                        <tr><td><span class="mono">/anonymizer</span></td><td>Open the settings menu &mdash; every option, edited live. <span class="docs-tag docs-tag-op">admin</span></td></tr>
+                        <tr><td><span class="mono">/anonymizer toggle</span></td><td>The master switch: anonymize server-wide, on or off. <span class="docs-tag docs-tag-op">admin</span></td></tr>
+                        <tr><td><span class="mono">/anonymizer reload</span></td><td>Re-read <span class="mono">config.yml</span> from disk (only needed after editing the file by hand). <span class="docs-tag docs-tag-op">admin</span></td></tr>
                         <tr><td><span class="mono">/anonymizer preview</span></td><td>Show what your redacted name currently looks like with the active settings. <span class="docs-tag docs-tag-op">admin</span></td></tr>
-                        <tr><td><span class="mono">/anonymizer status [player]</span></td><td>Report whether you (or another player) are currently being anonymized, and why. <span class="docs-tag docs-tag-op">admin</span></td></tr>
+                        <tr><td><span class="mono">/anonymizer status [player]</span></td><td>Report whether you (or another player) are currently being anonymized. <span class="docs-tag docs-tag-op">admin</span></td></tr>
+                        <tr><td><span class="mono">/anonymizer list</span></td><td>The real names of everyone hidden right now &mdash; how staff tell them apart, since they all display as the same block. <span class="docs-tag docs-tag-op">admin</span></td></tr>
                     </tbody>
                 </table>
             </div>
@@ -103,7 +127,7 @@
                 <table class="docs-table">
                     <thead><tr><th>Node</th><th>Default</th><th>Grants</th></tr></thead>
                     <tbody>
-                        <tr><td><span class="mono">anonymizer.admin</span></td><td>op</td><td><span class="mono">/anonymizer reload</span>, <span class="mono">preview</span>, and <span class="mono">status</span>.</td></tr>
+                        <tr><td><span class="mono">anonymizer.admin</span></td><td>op</td><td>The settings menu and the master switch, plus <span class="mono">reload</span>, <span class="mono">preview</span>, <span class="mono">status</span>, and <span class="mono">list</span>.</td></tr>
                         <tr><td><span class="mono">anonymizer.bypass</span></td><td>unset</td><td>Holder is never anonymized — their real name always shows, even while invisible.</td></tr>
                     </tbody>
                 </table>
@@ -112,31 +136,37 @@
 
         <section class="docs-section" id="config">
             <h2>Config</h2>
-            <p>The whole <span class="mono">config.yml</span> is commented in plain language. The key knobs:</p>
-            <pre class="docs-code">trigger:
-  require-fully-invisible: false   # true = invisible AND no armor AND empty hands
+            <p>The whole <span class="mono">config.yml</span> is commented in plain language, and every setting in it is also editable from the in-game menu &mdash; you only need to open the file if you prefer to.</p>
+            <pre class="docs-code">enabled: true            # master switch — false anonymizes nobody, server-wide
 
 redacted-name:
-  flicker: true        # animate the block with Minecraft's &k obfuscation
-  glyph: "&#9608;"            # the character the block is built from (solid bar)
-  length: 6            # how many glyphs wide the redacted name is
+  length: 10             # how many characters wide the hidden name is
+  flicker: true          # animate it with Minecraft's &amp;k obfuscation
+  bold: false            # render it bold
+  glyph: "#"             # the character it's built from (with flicker on you
+                         # only ever see the scramble, not this character)
 
-chat:
-  enabled: true        # redact the sender's name in chat (runs last, MONITOR)
+trigger:                 # what makes a player count as hidden
+  invisibility-potion: true    # require the Invisibility effect
+  require-no-armor: false      # also require all 4 armor slots empty
+  require-empty-hands: false   # also require main + off hand empty
 
-death-messages:
-  enabled: true        # scrub a hidden killer/victim's real name
+redact:                  # where the redaction is applied
+  display-name: true     # the main lever — covers vanilla chat, vanilla death
+                         # messages and most chat plugins for free
+  death-messages: true   # safety net: scrub the real name from death messages
+  chat-plugins: true     # redact plugins that keep their OWN name (EssentialsX,
+                         # CMI, VentureChat, the LuckPerms prefix, TAB)
+  nametag: true          # hide the floating in-world username
+  tab-mode: hide-skin    # hide-skin | name-only | remove | off
+  cmi-chat-group: 50     # CMI rank-bracket fix (0 = off)
+  hidden-skin:
+    texture: ''          # optional base64 skin to show instead of the default head
+    signature: ''
 
-tab:
-  tab-mode: hide-skin  # hide-skin | name-only | remove | off
-
-nametag:
-  enabled: true        # hide the floating in-world username (scoreboard team)
-
-hooks:
-  essentialsx: true    # redact nicknames in /list, /seen, /near, /whois
-  cmi: true            # redact CMI nicknames
-  venturechat: true    # redact the sender name in VentureChat</pre>
+check-interval-ticks: 10 # safety-net re-check (events already update instantly)
+debug: false</pre>
+            <div class="docs-callout">Changes made in the GUI are written back into this file and take effect immediately. Your comments survive that write &mdash; only the neat column alignment of the inline ones is re-flowed.</div>
         </section>
 
         <section class="docs-section" id="hooks">

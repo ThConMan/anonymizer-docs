@@ -179,10 +179,56 @@
         targets.forEach(function (t) { spy.observe(t); });
     }
 
+    /* ── Minecraft &k obfuscation ────────────────────────────────────────
+     * Re-rolls the glyphs of every `.redacted` run, the way the client redraws
+     * obfuscated text. The element's own text is only a seed for its LENGTH, so
+     * the markup can say anything and the width never changes while it
+     * scrambles. No-ops on sites with no `.redacted` elements, and under
+     * reduced-motion it scrambles once and holds still instead of strobing.
+     * ------------------------------------------------------------------- */
+    var OBF_GLYPHS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz' +
+                     '0123456789#@$%&*+=?<>/\\';
+
+    function scramble(len) {
+        var out = '';
+        for (var i = 0; i < len; i++) {
+            out += OBF_GLYPHS.charAt(Math.floor(Math.random() * OBF_GLYPHS.length));
+        }
+        return out;
+    }
+
+    function obfuscate() {
+        var runs = [];
+        each('.redacted', document, function (el) {
+            var len = el.textContent.trim().length || 10;
+            el.setAttribute('aria-label', 'redacted name');
+            el.textContent = scramble(len);
+            runs.push({ el: el, len: len });
+        });
+        if (!runs.length) return;
+        if (reduce) return; // one static scramble — the plugin's flicker:false look
+
+        var timer = null;
+        function tick() {
+            for (var i = 0; i < runs.length; i++) {
+                runs[i].el.textContent = scramble(runs[i].len);
+            }
+        }
+        function play() { if (timer === null) timer = setInterval(tick, 70); }
+        function pause() { if (timer !== null) { clearInterval(timer); timer = null; } }
+
+        // Don't burn frames on a backgrounded tab.
+        document.addEventListener('visibilitychange', function () {
+            if (document.hidden) pause(); else play();
+        });
+        play();
+    }
+
     function init() {
         scrollChrome();
         reveal();
         scrollSpy();
+        obfuscate();
     }
 
     if (document.readyState === 'loading') {
