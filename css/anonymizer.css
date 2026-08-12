@@ -173,3 +173,6 @@ body {
 .mc-tripwire_hook { background-image: url("../icons/tripwire_hook.svg"); }
 .mc-observer      { background-image: url("../icons/observer.svg"); }
 .mc-spyglass      { background-image: url("../icons/spyglass.svg"); }
+.mc-comparator    { background-image: url("../icons/comparator.svg"); }
+.mc-redstone_torch{ background-image: url("../icons/redstone_torch.svg"); }
+.mc-name_tag      { background-image: url("../icons/name_tag.svg"); }

@@ -67,7 +67,8 @@
         <section class="docs-section" id="trigger">
             <h2>The trigger</h2>
             <p>A player is anonymized whenever they carry the <strong>Invisibility</strong> potion effect. That's the only requirement by default.</p>
-            <p>For servers that want true ghosts only, turn on <span class="mono">require-fully-invisible</span>: a player is then anonymized only when they're invisible <em>and</em> wearing no armor <em>and</em> holding nothing — matching vanilla's "fully invisible" rule. Anyone with the <span class="mono">anonymizer.bypass</span> permission is never anonymized.</p>
+            <p>For servers that want true ghosts only, there are two extra requirements you can add — <span class="mono">trigger.require-no-armor</span> (all four armor slots empty) and <span class="mono">trigger.require-empty-hands</span> (main and off hand empty). Turn both on and a player is anonymized only when they're invisible <em>and</em> wearing no armor <em>and</em> holding nothing. Both are off by default: armor and held items still render and give away a player's <em>position</em>, but the point of the plugin is hiding their <em>name</em>.</p>
+            <p>Setting <span class="mono">trigger.invisibility-potion</span> to <span class="mono">false</span> widens the trigger instead — any invisible player counts, including invisibility granted by another plugin. Anyone with the <span class="mono">anonymizer.bypass</span> permission is never anonymized.</p>
             <div class="docs-callout">The moment the Invisibility effect ends, the player's real name returns everywhere automatically.</div>
         </section>
 
